@@ -336,6 +336,18 @@
   .drawer-close{ background:none; border:none; color:var(--mist); font-size:1.4rem; }
   .drawer-items{ flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:0.9rem; padding-right:0.3rem; }
   .drawer-empty{ color:var(--mist); font-size:0.9rem; margin-top:2rem; text-align:center; }
+  .drawer-form{ display:flex; flex-direction:column; gap:0.4rem; margin-top:0.8rem; }
+  .field-label{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--mist); margin-top:0.6rem; }
+  .field-label .req{ color:var(--ember); }
+  .field-input{
+    background:var(--dusk2); border:1px solid var(--line); color:var(--foam);
+    padding:0.65rem 0.8rem; border-radius:3px; font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.9rem; transition:border-color 0.25s ease;
+    color-scheme:dark;
+  }
+  .field-input:focus{ outline:none; border-color:var(--lantern); }
+  .field-input.field-error{ border-color:#e05c4a; animation:shake 0.35s ease; }
+  @keyframes shake{ 0%,100%{ transform:translateX(0); } 25%{ transform:translateX(-4px); } 75%{ transform:translateX(4px); } }
   .drawer-item{
     display:flex; justify-content:space-between; align-items:center;
     border-bottom:1px dashed var(--line); padding-bottom:0.7rem;
@@ -384,7 +396,7 @@
     <span>Koperasi Warga Institut Koperasi Malaysia Berhad</span>
   </div>
   <div class="hero-inner">
-    <div class="eyebrow">Papan Harga Hasil Laut</div>
+
     <h1>Hasil laut segar,<br><em>terus dari jeti.</em></h1>
     <p>KoIKMA Berhad membawa hasil tangkapan segar hari ini terus ke dapur anda — pilih jenis, tetapkan kuantiti, dan kami uruskan selebihnya.</p>
     <div class="hero-actions">
@@ -429,6 +441,12 @@
   </div>
   <div class="drawer-items" id="drawerItems">
     <div class="drawer-empty">Troli masih kosong. Pilih hasil laut segar di papan harga.</div>
+  </div>
+  <div class="drawer-form">
+    <label class="field-label" for="custName">Nama Pemesan <span class="req">*</span></label>
+    <input type="text" id="custName" class="field-input" placeholder="Cth: Ahmad bin Ali">
+    <label class="field-label" for="pickupDate">Tarikh Ambil <span class="req">*</span></label>
+    <input type="date" id="pickupDate" class="field-input">
   </div>
   <div class="drawer-foot">
     <div class="grand"><span>Jumlah Keseluruhan</span><span class="val" id="grandTotalDrawer">RM 0.00</span></div>
@@ -475,7 +493,7 @@
   ];
 
   // TODO: tukar nombor WhatsApp koperasi di sini (format: kod negara tanpa +)
-  const WHATSAPP_NUMBER = "60123456789";
+  const WHATSAPP_NUMBER = "601155851004";
 
   const grid = document.getElementById('grid');
   const fmt = n => 'RM ' + n.toFixed(2);
@@ -610,9 +628,25 @@
 
   // ---------- whatsapp order ----------
   document.getElementById('waBtn').addEventListener('click', () => {
+    const nameInput = document.getElementById('custName');
+    const dateInput = document.getElementById('pickupDate');
+    const custName = nameInput.value.trim();
+    const pickupDate = dateInput.value;
+
+    let hasError = false;
+    [nameInput, dateInput].forEach(el => el.classList.remove('field-error'));
+    if(!custName){
+      nameInput.classList.add('field-error');
+      hasError = true;
+    }
+    if(!pickupDate){
+      dateInput.classList.add('field-error');
+      hasError = true;
+    }
+
     let grand = 0;
-    let msg = "Assalamualaikum / Salam KoIKMA Berhad,\nSaya ingin membuat pesanan hasil laut segar berikut:\n\n";
     let has = false;
+    let itemsMsg = "";
     crates.forEach(card => {
       const qty = parseFloat(card.querySelector('.qty').value) || 0;
       if(qty > 0){
@@ -620,19 +654,32 @@
         const price = parseFloat(card.dataset.price);
         const total = qty * price;
         grand += total;
-        msg += `- ${card.dataset.name}: ${qty} kg x RM${price.toFixed(2)} = RM${total.toFixed(2)}\n`;
+        itemsMsg += `- ${card.dataset.name}: ${qty} kg x RM${price.toFixed(2)} = RM${total.toFixed(2)}\n`;
       }
     });
+
     if(!has){
       alert("Sila pilih sekurang-kurangnya satu jenis hasil laut dahulu.");
       return;
     }
+    if(hasError){
+      alert("Sila isi Nama Pemesan dan Tarikh Ambil sebelum menghantar pesanan.");
+      return;
+    }
+
+    const formattedDate = new Date(pickupDate + 'T00:00:00').toLocaleDateString('ms-MY', { day:'numeric', month:'long', year:'numeric' });
+
+    let msg = "Assalamualaikum / Salam KoIKMA Berhad,\nSaya ingin membuat pesanan hasil laut segar berikut:\n\n";
+    msg += `Nama Pemesan: ${custName}\n`;
+    msg += `Tarikh Ambil: ${formattedDate}\n\n`;
+    msg += itemsMsg;
     msg += `\nJumlah Keseluruhan: RM${grand.toFixed(2)}\n\nTerima kasih.`;
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
   });
 
   recalc();
+  document.getElementById('pickupDate').min = new Date().toISOString().split('T')[0];
 </script>
 </body>
 </html>
