@@ -58,6 +58,13 @@
     border:none;
     outline:none;
   }
+  @media (max-width:640px){
+    .hero-video{
+      object-fit:contain;
+      object-position:center center;
+      background:var(--ink);
+    }
+  }
   .hero-overlay{
     position:absolute; inset:0;
     background:linear-gradient(to top, rgba(6,12,20,0.96) 0%, rgba(8,16,26,0.55) 45%, rgba(8,16,26,0.25) 75%);
@@ -183,8 +190,22 @@
 
   /* ---------- CATALOG ---------- */
   .catalog{
+    position:relative;
     background:var(--ink);
     padding:2rem 6vw 5rem;
+    isolation:isolate;
+  }
+  .catalog::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(to bottom, var(--ink) 0%, rgba(10,20,32,0.88) 12%, rgba(10,20,32,0.93) 88%, var(--ink) 100%),
+      url('background.jpg');
+    background-size:cover;
+    background-position:center 60%;
+    background-attachment:fixed;
+    opacity:0.4;
+    z-index:-1;
   }
   .catalog-head{ max-width:640px; margin-bottom:3rem; }
   .catalog-head .eyebrow{ margin-bottom:0.9rem; }
