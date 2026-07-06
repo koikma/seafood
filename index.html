@@ -423,11 +423,11 @@
   // ---------- product data ----------
   // Nama fail imej perlu sepadan dengan senarai di bawah, simpan dalam folder /assets
   const products = [
-    { name:"Kembung",      file:"kembung.jpg",      price:14.00 },
-    { name:"Selar",        file:"selar.jpg",        price:16.00 },
-    { name:"Tenggiri",     file:"tenggiri.jpg",     price:38.00 },
-    { name:"Tongkol",      file:"tongkol.jpg",      price:15.00 },
-    { name:"Jenahak",      file:"jenahak.jpg",      price:45.00 },
+    { name:"Kembung",      file:"kembung.png",      price:14.00 },
+    { name:"Selar",        file:"selar.png",        price:16.00 },
+    { name:"Tenggiri",     file:"tenggiri.png",     price:38.00 },
+    { name:"Tongkol",      file:"tongkol.png",      price:15.00 },
+    { name:"Jenahak",      file:"jenahak.png",      price:45.00 },
     { name:"Selayang",     file:"selayang.jpg",     price:12.00 },
     { name:"Pari",         file:"pari.jpg",         price:20.00 },
     { name:"Siakap",       file:"siakap.jpg",       price:35.00 },
@@ -458,7 +458,7 @@
     card.dataset.price = p.price;
     card.innerHTML = `
       <span class="crate-no">${no}</span>
-      <div class="crate-img"><img src="assets/${p.file}" alt="${p.name}" loading="lazy" onerror="this.closest('.crate-img').style.background='linear-gradient(135deg,#1b2f40,#132433)'; this.style.display='none';"></div>
+      <div class="crate-img"><img src="${p.file}" alt="${p.name}" loading="lazy" onerror="this.closest('.crate-img').style.background='linear-gradient(135deg,#1b2f40,#132433)'; this.style.display='none';"></div>
       <h3 class="crate-name">${p.name}</h3>
       <div class="crate-price">${fmt(p.price)} <span class="unit">/kg</span></div>
       <div class="stepper">
