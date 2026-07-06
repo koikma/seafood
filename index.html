@@ -77,18 +77,30 @@
     50%{ transform:translateY(-14px) translateX(6px); opacity:0.95; }
   }
 
-  .hero-logo{
-    position:absolute; top:1.8rem; left:6vw; z-index:2;
+  .hero-brand{
+    position:absolute; top:1.8rem; left:6vw; right:6vw; z-index:2;
+    display:flex; align-items:center; gap:0.8rem;
     opacity:0;
     animation:riseIn 1s 0.05s cubic-bezier(.2,.7,.2,1) forwards;
   }
-  .hero-logo img{
-    height:52px; width:auto; display:block;
+  .hero-brand img{
+    height:48px; width:auto; display:block;
     filter:drop-shadow(0 4px 14px rgba(0,0,0,0.4));
+    flex-shrink:0;
+  }
+  .hero-brand span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.06em;
+    color:var(--foam);
+    opacity:0.85;
+    line-height:1.3;
+    max-width:280px;
   }
   @media (max-width:640px){
-    .hero-logo{ top:1.2rem; }
-    .hero-logo img{ height:38px; }
+    .hero-brand{ top:1.2rem; gap:0.6rem; }
+    .hero-brand img{ height:34px; }
+    .hero-brand span{ font-size:0.66rem; max-width:180px; }
   }
 
   .hero-inner{
@@ -367,9 +379,12 @@
 <header class="hero">
   <div class="hero-bg"></div>
   <div class="bokeh" id="bokeh"></div>
-  <div class="hero-logo"><img src="logo.png" alt="KoIKMA Berhad"></div>
+  <div class="hero-brand">
+    <img src="logo.png" alt="KoIKMA Berhad">
+    <span>Koperasi Warga Institut Koperasi Malaysia Berhad</span>
+  </div>
   <div class="hero-inner">
-    <div class="eyebrow">Koperasi Warga Institut Koperasi Malaysia Berhad</div>
+    <div class="eyebrow">Papan Harga Hasil Laut</div>
     <h1>Hasil laut segar,<br><em>terus dari jeti.</em></h1>
     <p>KoIKMA Berhad membawa hasil tangkapan segar hari ini terus ke dapur anda — pilih jenis, tetapkan kuantiti, dan kami uruskan selebihnya.</p>
     <div class="hero-actions">
@@ -445,7 +460,7 @@
     { name:"Jenahak",      file:"jenahak.png",      price:45.00 },
     { name:"Selayang",     file:"selayang.png",     price:12.00 },
     { name:"Pari",         file:"pari.png",         price:20.00 },
-    { name:"Siakap",       file:"siakap.png",       price:35.00 },
+    { name:"Siakap",       file:"siakap.jpg",       price:35.00 },
     { name:"Sotong",       file:"sotong.png",       price:28.00 },
     { name:"Udang",        file:"udang.png",        price:42.00 },
     { name:"Tilapia",      file:"talapia.png",      price:10.00 },
