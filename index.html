@@ -422,8 +422,8 @@
   </div>
   <div class="hero-inner">
 
-    <h1>Hasil laut segar,<br><em>terus dari jeti.</em></h1>
-    <p>KoIKMA Berhad membawa hasil tangkapan segar hari ini terus kepada anda — Pengambilan di Coopmart IKMa setiap jumaat</p>
+    <h1>Ikan Beku Segar Premium,<br><em>terus dari jeti.</em></h1>
+    <p>KoIKMA Berhad membawa hasil tangkapan segar hari ini terus ke anda — Pengambilan di COOPMart IKMa setiap Jumaat</p>
     <div class="hero-actions">
       <a href="#katalog" class="btn-primary">Lihat Papan Harga ↓</a>
       <span class="hero-note">19 pilihan segar · dikemaskini setiap hari</span>
@@ -470,7 +470,7 @@
   <div class="drawer-form">
     <label class="field-label" for="custName">Nama Pemesan <span class="req">*</span></label>
     <input type="text" id="custName" class="field-input" placeholder="Cth: Ahmad bin Ali">
-    <label class="field-label" for="pickupDate">Tarikh Ambil <span class="req">*</span></label>
+    <label class="field-label" for="pickupDate">Tarikh Ambil (Jumaat sahaja) <span class="req">*</span></label>
     <input type="date" id="pickupDate" class="field-input">
   </div>
   <div class="drawer-foot">
@@ -483,7 +483,7 @@
 <footer>
   <div>
     <h4>KoIKMA Berhad</h4>
-    <p>Koperasi Warga Institut Koperasi Malaysia Berhad — mengurus rantaian bekalan hasil laut segar untuk komuniti koperasi.</p>
+    <p>Koperasi Warga Institut Koperasi Malaysia Berhad — mengurus rantaian bekalan hasil laut segar untuk komuniti anda.</p>
   </div>
   <div class="foot-meta">
     Waktu Operasi: 7:00 AM – 5:00 PM<br>
@@ -496,25 +496,25 @@
   // ---------- product data ----------
   // Nama fail imej perlu sepadan dengan senarai di bawah, simpan dalam folder /assets
   const products = [
-    { name:"Kembung",      file:"kembung.png",      price:14.00 },
-    { name:"Selar",        file:"selar.png",        price:16.00 },
-    { name:"Tenggiri",     file:"tenggiri.png",     price:38.00 },
-    { name:"Tongkol",      file:"tongkol.png",      price:15.00 },
-    { name:"Jenahak",      file:"jenahak.png",      price:45.00 },
-    { name:"Selayang",     file:"selayang.png",     price:12.00 },
-    { name:"Pari",         file:"pari.png",         price:20.00 },
-    { name:"Siakap",       file:"siakap.png",       price:35.00 },
-    { name:"Sotong",       file:"sotong.png",       price:28.00 },
-    { name:"Udang",        file:"udang.png",        price:42.00 },
-    { name:"Tilapia",      file:"talapia.png",      price:10.00 },
-    { name:"Keli",         file:"keli.png",         price:13.00 },
-    { name:"Isi Ayam",     file:"chickenchop.png",  price:18.00 },
-    { name:"Ekor Lembu",   file:"ekor.png",         price:32.00 },
-    { name:"Dory Fillet",  file:"dory.png",         price:25.00 },
-    { name:"Bawal",        file:"bawal.png",        price:40.00 },
-    { name:"Isi Udang",    file:"isiudang.png",     price:48.00 },
-    { name:"Isi Kerang",   file:"isikerang.png",    price:30.00 },
-    { name:"Sotong Ring",  file:"sotongring.png",   price:32.00 },
+    { name:"Kembung",      file:"kembung.png",      price:9.50 },
+    { name:"Selar",        file:"selar.png",        price:12.50 },
+    { name:"Tenggiri",     file:"tenggiri.png",     price:21.80 },
+    { name:"Tongkol",      file:"tongkol.png",      price:8.80 },
+    { name:"Jenahak",      file:"jenahak.png",      price:26.50 },
+    { name:"Selayang",     file:"selayang.png",     price:10.00 },
+    { name:"Pari",         file:"pari.png",         price:23.60 },
+    { name:"Siakap",       file:"siakap.png",       price:11.90 },
+    { name:"Sotong",       file:"sotong.png",       price:18.90 },
+    { name:"Udang",        file:"udang.png",        price:20.80 },
+    { name:"Tilapia",      file:"talapia.png",      price:9.80 },
+    { name:"Keli",         file:"keli.png",         price:19.00 },
+    { name:"Isi Ayam",     file:"chickenchop.png",  price:13.30 },
+    { name:"Ekor Lembu",   file:"ekor.png",         price:19.90 },
+    { name:"Dory Fillet",  file:"dory.png",         price:9.80 },
+    { name:"Bawal",        file:"bawal.png",        price:17.90 },
+    { name:"Isi Udang",    file:"isiudang.png",     price:16.80 },
+    { name:"Isi Kerang",   file:"isikerang.png",    price:11.30 },
+    { name:"Sotong Ring",  file:"sotongring.png",   price:9.50 },
   ];
 
   // TODO: tukar nombor WhatsApp koperasi di sini (format: kod negara tanpa +)
@@ -714,7 +714,30 @@
   });
 
   recalc();
-  document.getElementById('pickupDate').min = new Date().toISOString().split('T')[0];
+  // ---------- pickup date: Jumaat sahaja ----------
+  const pickupDateEl = document.getElementById('pickupDate');
+  function nextFriday(fromDate){
+    const d = new Date(fromDate);
+    const day = d.getDay(); // 0=Ahad ... 5=Jumaat
+    let diff = (5 - day + 7) % 7;
+    d.setDate(d.getDate() + diff);
+    return d;
+  }
+  function toISO(d){ return d.toISOString().split('T')[0]; }
+
+  const firstFriday = nextFriday(new Date());
+  pickupDateEl.min = toISO(firstFriday);
+  pickupDateEl.value = toISO(firstFriday);
+
+  pickupDateEl.addEventListener('input', () => {
+    if(!pickupDateEl.value) return;
+    const chosen = new Date(pickupDateEl.value + 'T00:00:00');
+    if(chosen.getDay() !== 5){
+      alert('Tarikh ambil hanya boleh dipilih pada hari Jumaat. Sila pilih semula.');
+      const fallback = nextFriday(chosen);
+      pickupDateEl.value = toISO(fallback);
+    }
+  });
 </script>
 </body>
 </html>
