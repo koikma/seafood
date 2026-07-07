@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KoIKMa Berhad — Hasil Laut Segar dari Jeti</title>
+<title>KoIKMA Berhad — Hasil Laut Segar dari Jeti</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -271,15 +271,21 @@
     font-family:'IBM Plex Mono', monospace;
     color:var(--lantern);
     font-size:0.98rem;
-    margin-bottom:0.9rem;
+    margin-bottom:0.35rem;
   }
   .crate-price .unit{ color:var(--mist); font-size:0.8rem; }
+  .crate-note{
+    font-size:0.72rem; color:var(--mist);
+    font-style:italic;
+    margin-bottom:0.7rem;
+  }
 
   .stepper{
     display:flex; align-items:center;
     border:1px solid var(--line);
     border-radius:3px;
     overflow:hidden;
+    margin-top:0.3rem;
     margin-bottom:0.7rem;
   }
   .step-btn{
@@ -496,25 +502,25 @@
   // ---------- product data ----------
   // Nama fail imej perlu sepadan dengan senarai di bawah, simpan dalam folder /assets
   const products = [
-    { name:"Kembung",      file:"kembung.png",      price:9.50 },
-    { name:"Selar",        file:"selar.png",        price:12.50 },
-    { name:"Tenggiri",     file:"tenggiri.png",     price:21.80 },
-    { name:"Tongkol",      file:"tongkol.png",      price:8.80 },
-    { name:"Jenahak",      file:"jenahak.png",      price:26.50 },
-    { name:"Selayang",     file:"selayang.png",     price:10.00 },
-    { name:"Pari",         file:"pari.png",         price:23.60 },
-    { name:"Siakap",       file:"siakap.png",       price:11.90 },
-    { name:"Sotong",       file:"sotong.png",       price:18.90 },
-    { name:"Udang",        file:"udang.png",        price:20.80 },
-    { name:"Tilapia",      file:"talapia.png",      price:9.80 },
-    { name:"Keli",         file:"keli.png",         price:19.00 },
-    { name:"Isi Ayam",     file:"chickenchop.png",  price:13.30 },
-    { name:"Ekor Lembu",   file:"ekor.png",         price:19.90 },
-    { name:"Dory Fillet",  file:"dory.png",         price:9.80 },
-    { name:"Bawal",        file:"bawal.png",        price:17.90 },
-    { name:"Isi Udang",    file:"isiudang.png",     price:16.80 },
-    { name:"Isi Kerang",   file:"isikerang.png",    price:11.30 },
-    { name:"Sotong Ring",  file:"sotongring.png",   price:9.50 },
+    { name:"Kembung",      file:"kembung.png",      price:9.50,  unit:"kg" },
+    { name:"Selar",        file:"selar.png",        price:12.50, unit:"kg" },
+    { name:"Tenggiri",     file:"tenggiri.png",     price:21.80, unit:"kg" },
+    { name:"Tongkol",      file:"tongkol.png",      price:8.80,  unit:"kg" },
+    { name:"Jenahak",      file:"jenahak.png",      price:26.50, unit:"kg" },
+    { name:"Selayang",     file:"selayang.png",     price:10.00, unit:"kg" },
+    { name:"Pari",         file:"pari.png",         price:23.60, unit:"kg" },
+    { name:"Siakap",       file:"siakap.png",       price:11.90, unit:"ekor", note:null },
+    { name:"Sotong",       file:"sotong.png",       price:18.90, unit:"kg" },
+    { name:"Udang",        file:"udang.png",        price:20.80, unit:"kg" },
+    { name:"Tilapia",      file:"talapia.png",      price:9.80,  unit:"kg" },
+    { name:"Keli",         file:"keli.png",         price:19.00, unit:"block", note:"7-9 ekor / block" },
+    { name:"Isi Ayam",     file:"chickenchop.png",  price:13.30, unit:"kg" },
+    { name:"Ekor Lembu",   file:"ekor.png",         price:19.90, unit:"kg" },
+    { name:"Dory Fillet",  file:"dory.png",         price:9.80,  unit:"kg" },
+    { name:"Bawal",        file:"bawal.png",        price:17.90, unit:"kg" },
+    { name:"Isi Udang",    file:"isiudang.png",     price:16.80, unit:"pek", note:"100-200 ekor / pek" },
+    { name:"Isi Kerang",   file:"isikerang.png",    price:11.30, unit:"pek", note:"saiz L" },
+    { name:"Sotong Ring",  file:"sotongring.png",   price:9.50,  unit:"pek", note:"saiz L" },
   ];
 
   // TODO: tukar nombor WhatsApp koperasi di sini (format: kod negara tanpa +)
@@ -525,18 +531,22 @@
 
   products.forEach((p, i) => {
     const no = String(i+1).padStart(2,'0');
+    const step = p.unit === 'kg' ? 0.5 : 1;
     const card = document.createElement('article');
     card.className = 'crate';
     card.dataset.name = p.name;
     card.dataset.price = p.price;
+    card.dataset.unit = p.unit;
+    card.dataset.step = step;
     card.innerHTML = `
       <span class="crate-no">${no}</span>
       <div class="crate-img"><img src="${p.file}" alt="${p.name}" loading="lazy" onerror="this.closest('.crate-img').style.background='linear-gradient(135deg,#1b2f40,#132433)'; this.style.display='none';"></div>
       <h3 class="crate-name">${p.name}</h3>
-      <div class="crate-price">${fmt(p.price)} <span class="unit">/kg</span></div>
+      <div class="crate-price">${fmt(p.price)} <span class="unit">/ ${p.unit}</span></div>
+      ${p.note ? `<div class="crate-note">${p.note}</div>` : ''}
       <div class="stepper">
         <button class="step-btn minus" aria-label="Kurang">&minus;</button>
-        <input class="qty" type="number" value="0" min="0" step="0.5" inputmode="decimal">
+        <input class="qty" type="number" value="0" min="0" step="${step}" inputmode="decimal">
         <button class="step-btn plus" aria-label="Tambah">+</button>
       </div>
       <div class="line-total"><span>Jumlah</span><span class="val">RM 0.00</span></div>
@@ -603,7 +613,7 @@
       if(qty > 0){
         grand += total;
         count++;
-        lines.push({ name: card.dataset.name, qty, price, total });
+        lines.push({ name: card.dataset.name, qty, price, total, unit: card.dataset.unit });
       }
     });
     grandTotalBar.textContent = fmt(grand);
@@ -622,18 +632,20 @@
       <div class="drawer-item">
         <div>
           <div class="di-name">${l.name}</div>
-          <div class="di-meta">${l.qty} kg &times; RM ${l.price.toFixed(2)}</div>
+          <div class="di-meta">${l.qty} ${l.unit} &times; RM ${l.price.toFixed(2)}</div>
         </div>
         <div class="di-total">${fmt(l.total)}</div>
       </div>
     `).join('');
   }
 
-  function bumpQty(card, delta){
+  function bumpQty(card, direction){
+    const step = parseFloat(card.dataset.step) || 1;
     const input = card.querySelector('.qty');
     let val = parseFloat(input.value) || 0;
-    val = Math.max(0, val + delta);
-    input.value = Math.round(val * 2) / 2;
+    val = Math.max(0, val + (direction * step));
+    const decimals = step % 1 === 0 ? 0 : 1;
+    input.value = parseFloat((Math.round(val / step) * step).toFixed(decimals));
     const lineVal = card.querySelector('.line-total .val');
     lineVal.classList.remove('pulse'); void lineVal.offsetWidth; lineVal.classList.add('pulse');
     recalc();
@@ -642,8 +654,8 @@
   grid.addEventListener('click', (e) => {
     const card = e.target.closest('.crate');
     if(!card) return;
-    if(e.target.classList.contains('plus')) bumpQty(card, 0.5);
-    if(e.target.classList.contains('minus')) bumpQty(card, -0.5);
+    if(e.target.classList.contains('plus')) bumpQty(card, 1);
+    if(e.target.classList.contains('minus')) bumpQty(card, -1);
   });
   grid.addEventListener('input', (e) => {
     if(e.target.classList.contains('qty')) recalc();
@@ -689,7 +701,7 @@
         const price = parseFloat(card.dataset.price);
         const total = qty * price;
         grand += total;
-        itemsMsg += `- ${card.dataset.name}: ${qty} kg x RM${price.toFixed(2)} = RM${total.toFixed(2)}\n`;
+        itemsMsg += `- ${card.dataset.name}: ${qty} ${card.dataset.unit} x RM${price.toFixed(2)} = RM${total.toFixed(2)}\n`;
       }
     });
 
